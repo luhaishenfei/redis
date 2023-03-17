@@ -1,21 +1,29 @@
 package com.lsgf;
 
+import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 
 @SpringBootTest
 class RedisLockApplicationTests {
+
+    @Test
+    void contextLoads() {
+    }
 
     @Autowired
     @Qualifier("myRedisTemplate")
     private RedisTemplate redisTemplate;
 
     @Test
-    void contextLoads() {
+    public void testRange(){
+       redisTemplate.opsForList().range("listOps:leftPush",0,-1);
     }
+
 
     @Test
     void testRedis(){
