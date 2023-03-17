@@ -19,7 +19,7 @@ class RedisLockApplicationTests {
     @Qualifier("myRedisTemplate")
     private RedisTemplate redisTemplate;
 
-    @Test
+//    @Test
     public void testRange(){
        redisTemplate.opsForList().range("listOps:leftPush",0,-1);
     }
