@@ -39,7 +39,7 @@ public class RedisController {
     }
 
     //del lock
-    @RequestMapping("/delLock")
+        @RequestMapping("/delLock")
     public RspBean delLock(String key){
         RspBean res=new RspBean();
         if (redisTemplate.hasKey(key)){

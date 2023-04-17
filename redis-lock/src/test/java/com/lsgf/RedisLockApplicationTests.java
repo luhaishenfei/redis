@@ -1,12 +1,19 @@
 package com.lsgf;
 
+import com.lsgf.pojo.RspBean;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.hash.HashMapper;
+import org.springframework.data.redis.hash.ObjectHashMapper;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @SpringBootTest
 class RedisLockApplicationTests {
@@ -26,7 +33,7 @@ class RedisLockApplicationTests {
 
 
     @Test
-    void testRedis(){
+    void testRedis() {
         int i = 0;
         try {
             long start = System.currentTimeMillis();// 开始毫秒数
@@ -44,4 +51,15 @@ class RedisLockApplicationTests {
         System.out.println("redis每秒操作：" + i + "次");
     }
 
+
+    @Test
+    public void writeHash(){
+        Map map=new HashMap();
+        map.put("a",1);
+        map.put("b",2);
+        map.put("c",3);
+        map.put("d",4);
+
+        redisTemplate.opsForHash().putAll("thash",map);
+    }
 }
