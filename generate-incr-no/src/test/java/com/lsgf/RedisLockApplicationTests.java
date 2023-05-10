@@ -1,6 +1,7 @@
 package com.lsgf;
 
 import com.lsgf.pojo.RspBean;
+import com.lsgf.utils.ZKRegister;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,4 +70,12 @@ class RedisLockApplicationTests {
 //
 //        redisTemplate.opsForHash().putAll("thash",map);
 //    }
+
+
+    //zkRegister
+    @Test
+    public void zkRegisterTest(){
+        ZKRegister zkRegister=new ZKRegister();
+        zkRegister.register();
+    }
 }

@@ -1,11 +1,11 @@
-package com.lsgf;
+package com.lsgf.utils;
 
-import com.lsgf.utils.EnvironmentUtil;
-import com.lsgf.utils.ZKRegister;
 import org.apache.zookeeper.*;
 import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.io.IOException;
@@ -13,28 +13,32 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.concurrent.CountDownLatch;
 
-import static org.springframework.boot.SpringApplication.run;
+@Component
+@Order(value = 1)
+public class ZKRegister implements ApplicationRunner {
 
-
-@SpringBootApplication
-public class RedisLockApplication {
-    public static void main(String[] args) {
-        run(RedisLockApplication.class, args);
-//        try {
-////            zkRegister();
-//        } catch (UnknownHostException e) {
-//            throw new RuntimeException(e);
-//        }
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
+        register();
     }
 
-    private static void zkRegister() throws UnknownHostException {
-        String ip = InetAddress.getLocalHost().getHostAddress();
+    @Resource
+    EnvironmentUtil environmentUtil;
 
-//        EnvironmentUtil envUtil = new EnvironmentUtil();
-//        String port = envUtil.getPort();
-//        String webApp = envUtil.getWebApp();
-//        String zkIp=envUtil.getConfig("zk.ip");
+    @Resource
+    Environment environment;
 
+    public void register() {
+        String port = environment.getProperty("server.port");
+        String webApp = environment.getProperty("spring.application.name");
+        String zkIp = environment.getProperty("zk.ip");
+
+        String serviceIp = null;
+        try {
+            serviceIp = InetAddress.getLocalHost().getHostAddress();
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
+        }
         try {
             final CountDownLatch countDownLatch = new CountDownLatch(1);
             //zk集群配置
@@ -53,7 +57,7 @@ public class RedisLockApplication {
                     });
              */
             ZooKeeper zooKeeper =
-                    new ZooKeeper("10.0.19.168:2181",
+                    new ZooKeeper(zkIp + ":2181",
                             4000, new Watcher() {
                         @Override
                         public void process(WatchedEvent event) {
@@ -68,11 +72,11 @@ public class RedisLockApplication {
             //CONNECTED
             System.out.println(zooKeeper.getState());
             //检查服务是否已经注册
-            if (zooKeeper.exists("/generate-incr-no", false) == null) {
-                zooKeeper.create("/generate-incr-no", ip.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.CONTAINER);
+            if (zooKeeper.exists("/" + webApp, false) == null) {
+                zooKeeper.create("/" + webApp, serviceIp.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.CONTAINER);
             }
             //添加节点
-            zooKeeper.create("/generate-incr-no/" + ip, "0".getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL);
+            zooKeeper.create("/" + webApp + "/" + serviceIp, port.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
