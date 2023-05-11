@@ -23,9 +23,6 @@ public class ZKRegister implements ApplicationRunner {
     }
 
     @Resource
-    EnvironmentUtil environmentUtil;
-
-    @Resource
     Environment environment;
 
     public void register() {

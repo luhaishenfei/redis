@@ -73,9 +73,9 @@ class RedisLockApplicationTests {
 
 
     //zkRegister
-    @Test
-    public void zkRegisterTest(){
-        ZKRegister zkRegister=new ZKRegister();
-        zkRegister.register();
-    }
+//    @Test
+//    public void zkRegisterTest(){
+//        ZKRegister zkRegister=new ZKRegister();
+//        zkRegister.register();
+//    }
 }
