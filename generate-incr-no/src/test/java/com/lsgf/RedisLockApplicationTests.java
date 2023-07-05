@@ -1,7 +1,6 @@
 package com.lsgf;
 
 import com.lsgf.pojo.RspBean;
-import com.lsgf.utils.ZKRegister;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,7 @@ class RedisLockApplicationTests {
 //
 //    @Autowired
 //    @Qualifier("myRedisTemplate")
-//    private RedisTemplate redisTemplate;
+//    private 1RedisTemplate redisTemplate;
 //
 ////    @Test
 //    public void testRange(){
