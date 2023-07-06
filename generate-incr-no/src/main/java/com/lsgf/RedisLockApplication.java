@@ -1,13 +1,7 @@
 package com.lsgf;
 
-import com.lsgf.utils.EnvironmentUtil;
-import com.lsgf.utils.ZKRegister;
 import org.apache.zookeeper.*;
-import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.core.env.Environment;
-
-import javax.annotation.Resource;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -20,11 +14,11 @@ import static org.springframework.boot.SpringApplication.run;
 public class RedisLockApplication {
     public static void main(String[] args) {
         run(RedisLockApplication.class, args);
-//        try {
-////            zkRegister();
-//        } catch (UnknownHostException e) {
-//            throw new RuntimeException(e);
-//        }
+        try {
+            zkRegister();
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static void zkRegister() throws UnknownHostException {
