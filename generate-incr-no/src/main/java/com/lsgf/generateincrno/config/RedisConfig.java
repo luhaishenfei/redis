@@ -1,4 +1,4 @@
-package com.lsgf.config;
+package com.lsgf.generateincrno.config;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
